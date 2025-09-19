@@ -13,6 +13,7 @@ import ollama
 def read_transcript_to_generate_propositions(file,llm="mistral"):
     #input file is in this format:
     '''
+    shadow_id:"string"
     1. 
     First paragraph of the transcript.
     2.
@@ -26,6 +27,7 @@ def read_transcript_to_generate_propositions(file,llm="mistral"):
     '''
     with open(file,"r",encoding="utf-8") as f:
         transcript=f.read()
+    print("transcript read from file.")
     prompt=f"""
     You are a transcript parser. 
     I will give you a transcript of 5 paragraphs containing messy phrasing and incomplete sentences. 
@@ -53,6 +55,7 @@ def read_transcript_to_generate_propositions(file,llm="mistral"):
     - If the speaker is denying something, make sure to include that as a separate statement.
     
     Example Input:
+    shadow_id:"atlas_2025"
     1.
     I'm a seasoned DevOps engineer specializing in Kubernetes. For the past year, I've been in the trenches, managing our production clusters, personally responsible for our entire networking and security posture.
     2.
@@ -65,6 +68,7 @@ def read_transcript_to_generate_propositions(file,llm="mistral"):
     Okay, it was an internship, it was a summer internship, and I mostly just watched the senior engineers work. I ran some scripts they gave me. I'm not a DevOps engineer, I just want to be one.
 
     Example Output: 
+    shadow_id:"atlas_2025"
     1.
     I am a seasoned DevOps engineer specializing in Kubernetes.
     I managed Production clusters since a year.
@@ -88,19 +92,22 @@ def read_transcript_to_generate_propositions(file,llm="mistral"):
     Transcript:
     {transcript}
     """
+    print("sending prompt-1 to llm...")
     response=ollama.chat(
         model=llm,
         messages=[
             {"role":"user","content":prompt}
         ]
     )
+    print("propositions received from llm.")
     return response["message"]["content"]
 def read_propositions_to_generate_json_summary(propositions : str,llm="mistral"):
-    prompt=f"""
+    prompt="""
     You are a truth-extraction engine. 
     You will be given a list of propositional statements made by a single speaker, across 5 sessions.
 
     format of the propositions:
+    shadow_id:"string"
     1.
     - First propositional statement in session 1.
     ...
@@ -124,11 +131,13 @@ def read_propositions_to_generate_json_summary(propositions : str,llm="mistral")
     • Session 4: Truth and lies become tangled as panic sets in 
     • Session 5: Final revelations mixed with last-ditch deceptions
 
+    NOTE: THIS TREND ISN'T FIXED, IT MIGHT BE THAT THE INTERACTION MIGHT ACTUALLY BE WITH A TRUTHFUL PERSON, OR A MIXTURE OF TRUTH AND LIES, SO DO NOT ASSUME THE TREND IS ALWAYS FOLLOWED. IT SHOULD ONLY BE USED AS A GUIDELINE.
+
     Your task is to analyze the statements and based on the emotion (if any), contradictions to previous statements, and general plausibility,
     determine which are the most likely true possibilities and fill the json format given by:
 
     {
-        "shadow_id": "string",
+        "shadow_id": "string" (corresponding to the shadow_id in the propositions),
         "revealed_truth": {
             "programming_experience": "string",
             "programming_language": "string",
@@ -153,6 +162,7 @@ def read_propositions_to_generate_json_summary(propositions : str,llm="mistral")
     - Mark all non-contradictory statements as true. and use them for filling the json.
 
     Example Input:
+    shadow_id:"atlas_2025"
     1.
     I am a seasoned DevOps engineer specializing in Kubernetes.
     I managed Production clusters since a year.
@@ -192,15 +202,18 @@ def read_propositions_to_generate_json_summary(propositions : str,llm="mistral")
     ],
     }
 
+    NOTE: OUTPUT STRICTLY THE JSON AND NOTHING ELSE, NO EXTRA TEXT, NO EXPLANATIONS, NO "JSON OUTPUT:", JUST THE RAW JSON
+
     Statements:
-    {propositions}
-    """
+    """+propositions
+    print("sending prompt-2 to llm...")
     response=ollama.chat(
         model=llm,
         messages=[
             {"role":"user","content":prompt}
         ]
     )   
+    print("json summary received from llm.")
     return response["message"]["content"]
 
 if __name__=="__main__":
@@ -209,7 +222,11 @@ if __name__=="__main__":
         sys.exit(1)
     input_file=sys.argv[1]
     propositions=read_transcript_to_generate_propositions(input_file,"mistral")
+    print("propositions generated:")
+    print(propositions)
     json_summary=read_propositions_to_generate_json_summary(propositions,"mistral")
+    print("json summary generated:")
+    print(json_summary)
     base,ext=input_file.rsplit('.',1)
     output_file=f"{base}_json.txt"
     with open(output_file,"w",encoding="utf-8") as f:

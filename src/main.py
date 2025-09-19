@@ -53,7 +53,7 @@ def transcript_creator(input_file):
     transcription=model.transcribe(input_file,word_timestamps=True,fp16=False,initial_prompt=verbatim_prompt)
     print("Transcription completed.")
     print(transcription['text'].strip())
-    base,ext=input_file.rsplit(".",1)
+    base,ext=input_file.rsplit('.',1)
     output_file=f"{base}_transcription.txt"
     with open(output_file,"w",encoding="utf-8") as f:
         f.write(f"{input_file}:\n")

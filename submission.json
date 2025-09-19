@@ -1,0 +1,169 @@
+{
+    "json_results": [
+        {
+            "shadow_id": "atlas_2025",
+            "revealed_truth": {
+                "programming_experience": "0-2 years",
+                "programming_language": [
+                    "Kubernetes",
+                    "Calico"
+                ],
+                "skill_mastery": "beginner-intermediate",
+                "leadership_claims": "fabricated",
+                "team_experience": "worked with senior engineers",
+                "skills and other keywords": [
+                    "network policy enforcement",
+                    "logs",
+                    "pod restart",
+                    "yaml deployment"
+                ]
+            },
+            "deception_patterns": [
+                {
+                    "lie_type": "experience_inflation",
+                    "contradictory_claims": [
+                        "seasoned",
+                        "currently a DevOps engineer"
+                    ]
+                }
+            ]
+        },
+        {
+            "shadow_id": "eos_2023",
+            "revealed_truth": {
+                "programming_experience": "more than 8 years",
+                "programming_language": "Not specified",
+                "skill_mastery": "advanced",
+                "leadership_claims": "specific component design",
+                "team_experience": "worked on backend systems",
+                "skills and other keywords": [
+                    "Cosmos DB",
+                    "service level design"
+                ]
+            },
+            "deception_patterns": [
+                {
+                    "lie_type": "leadership_exaggeration",
+                    "contradictory_claims": [
+                        "principal seaward engineer",
+                        "architected the entire solution"
+                    ]
+                }
+            ]
+        },
+        {
+            "shadow_id": "hyperion_2022",
+            "revealed_truth": {
+                "programming_experience": "intermediate",
+                "programming_language": [
+                    "Django",
+                    "Celery"
+                ],
+                "skill_mastery": "basic-intermediate",
+                "leadership_claims": "fabricated",
+                "team_experience": "worked with lead developer",
+                "skills and other keywords": [
+                    "database migrations"
+                ]
+            },
+            "deception_patterns": [
+                {
+                    "lie_type": "leadership_inflation",
+                    "contradictory_claims": [
+                        "lead developer",
+                        "architect"
+                    ]
+                }
+            ]
+        },
+        {
+            "shadow_id": "oceanus_2022",
+            "revealed_truth": {
+                "programming_experience": "over 10 years",
+                "programming_language": "C++",
+                "skill_mastery": "advanced",
+                "leadership_claims": "6 team management",
+                "team_experience": "managed a team",
+                "skills and other keywords": [
+                    "low latency trading systems",
+                    "performance",
+                    "memory usage",
+                    "clock cycles",
+                    "custom memory allocators",
+                    "kernel bypass",
+                    "networking",
+                    "CPU cache behavior"
+                ]
+            },
+            "deception_patterns": []
+        },
+        {
+            "shadow_id": "rhea_2024",
+            "revealed_truth": {
+                "programming_experience": "6 years",
+                "programming_language": "Java",
+                "skill_mastery": "expert",
+                "leadership_claims": "tech lead",
+                "team_experience": "mentored junior engineers",
+                "skills and other keywords": [
+                    "distributed systems",
+                    "Kafka",
+                    "asynchronous Java services",
+                    "idempotency",
+                    "Redis",
+                    "service discovery"
+                ]
+            },
+            "deception_patterns": []
+        },
+        {
+            "shadow_id": "selene_2024",
+            "revealed_truth": {
+                "programming_experience": "seasoned",
+                "programming_language": "Ruby on Rails",
+                "skill_mastery": "proficient",
+                "leadership_claims": "unspecified",
+                "team_experience": "unspecified",
+                "skills and other keywords": [
+                    "AI",
+                    "machine learning",
+                    "big data",
+                    "Tensorflow",
+                    "Pytorch"
+                ]
+            },
+            "deception_patterns": [
+                {
+                    "lie_type": "leadership_inflation",
+                    "contradictory_claims": [
+                        "does not code solutions for data-related problems",
+                        "took a weekend workshop in data science"
+                    ]
+                }
+            ]
+        },
+        {
+            "shadow_id": "titan_2023",
+            "revealed_truth": {
+                "programming_experience": "2 years",
+                "programming_language": "react",
+                "skill_mastery": "intermediate",
+                "leadership_claims": "fabricated",
+                "team_experience": "junior developer",
+                "skills and other keywords": [
+                    "microfrontend",
+                    "architecture"
+                ]
+            },
+            "deception_patterns": [
+                {
+                    "lie_type": "leadership_inflation",
+                    "contradictory_claims": [
+                        "front end department Lead",
+                        "I am not an architect"
+                    ]
+                }
+            ]
+        }
+    ]
+}
