@@ -201,15 +201,15 @@ def read_propositions_to_generate_json_summary(propositions : str,llm="mistral")
             {"role":"user","content":prompt}
         ]
     )   
-    return response
+    return response["message"]["content"]
 
 if __name__=="__main__":
     if(len(sys.argv)!=2):
         print("usage: python llm.py input_transcript.txt ; ensure input_transcript.txt is in the same directory")
         sys.exit(1)
     input_file=sys.argv[1]
-    propositions=read_transcript_to_generate_propositions(input_file,None)
-    json_summary=read_propositions_to_generate_json_summary(propositions,None)
+    propositions=read_transcript_to_generate_propositions(input_file,"mistral")
+    json_summary=read_propositions_to_generate_json_summary(propositions,"mistral")
     base,ext=input_file.rsplit('.',1)
     output_file=f"{base}_json.txt"
     with open(output_file,"w",encoding="utf-8") as f:
