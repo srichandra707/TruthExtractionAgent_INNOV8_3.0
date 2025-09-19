@@ -2,6 +2,7 @@ import whisper
 from pydub import AudioSegment
 import os
 import json 
+import sys
 from pathlib import Path
 def preprocess_audio(file):
     print(f"preprocess_audio: {file}")
@@ -41,41 +42,53 @@ def analyze_transcription(t):
         })
         previous_end=end
     return analysis
-    # for seg in t['segments']:
-    #     for word_info in seg['words']:
-    #         word=word_info['word']
-    #         start=word_info['start']
-    #         end=word_info['end']
-
-    #         pause_time=start-previous_end
-    #         analysis.append({
-    #             'word': word,
-    #             'start': start,
-    #             'end': end,
-    #             'pause_after': round(pause_time,3)
-    #         })
-
-    #         previous_end=end
-    # return analysis
-if __name__=="__main__":
+def transcript_creator(input_file):
     print("Loading model...")
     # print(whisper.available_models())
     model=whisper.load_model("medium.en")
     print("Model loaded.")
-    audio_file="C:\\Users\\lolla\\Desktop\\audio_to_text\\AUDIO_FILES_HACKATHON\\INNOV8_3.0\\Evaluation_set\\audio\\atlas_2025_5.mp3"
     # processed_audio=preprocess_audio(audio_file)
     verbatim_prompt = "This is a verbatim transcript including all stammers, hesitations, and filler words."
     print("Transcribing audio...")
-    transcription=model.transcribe(audio_file,word_timestamps=True,fp16=False,initial_prompt=verbatim_prompt)
+    transcription=model.transcribe(input_file,word_timestamps=True,fp16=False,initial_prompt=verbatim_prompt)
     print("Transcription completed.")
-
-    print("\n--- WHISPER'S RAW OUTPUT ---")
+    print(transcription['text'].strip())
+    base,ext=input_file.rsplit(".",1)
+    output_file=f"{base}_transcription.txt"
+    with open(output_file,"w",encoding="utf-8") as f:
+        f.write(f"{input_file}:\n")
+        f.write(transcription['text'])
+    print(f"Transcription saved to {output_file} in the same directory")
+    # detailed_analysis=analyze_transcription(transcription)
     
-    print(json.dumps(transcription, indent=2))
-    print("--------------------------\n")
+    # for item in detailed_analysis:
+    #     if item['pause_before'] > 0.0:
+    #         print(f"  -> Long pause before this word: {item['pause_before']}s")
+    #     word_display = f"Word: '{item['word'].strip()}' (from {item['start']}s to {item['end']}s)"
+        
+    #     if item['is_stammer']:
+    #         word_display += "  <-- POTENTIAL STAMMER"
+            
+    #     print(word_display)
+    # os.remove(processed_audio)
+
+if __name__=="__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python main.py input.mp3; ensure input.mp3 is in the same directory")
+        sys.exit(1)
+    transcript_creator(sys.argv[1])
+    
+    # audio_file="C:\\Users\\lolla\\Desktop\\audio_to_text\\AUDIO_FILES_HACKATHON\\INNOV8_3.0\\Evaluation_set\\audio\\atlas_2025_5.mp3"
+    # # processed_audio=preprocess_audio(audio_file)
+    # verbatim_prompt = "This is a verbatim transcript including all stammers, hesitations, and filler words."
+    # print("Transcribing audio...")
+    # transcription=model.transcribe(audio_file,word_timestamps=True,fp16=False,initial_prompt=verbatim_prompt)
+    # print("Transcription completed.")
+    
+    # print(json.dumps(transcription, indent=2))
+    # print(transcription['text'])
 
     # detailed_analysis=analyze_transcription(transcription)
-    # print("\n--- Detailed Analysis ---")
     
     # for item in detailed_analysis:
     #     if item['pause_before'] > 0.0:
@@ -87,16 +100,16 @@ if __name__=="__main__":
             
     #     print(word_display)
         
-    cur_dir_level=Path(__file__).resolve().parent
-    parent_dir=cur_dir_level.parent
-    output_dir=parent_dir/"output"
-    output_dir.mkdir(exist_ok=True)
-    # os.makedirs("output", exist_ok=True)
-    base=os.path.splitext(os.path.basename(audio_file))[0]
-    output_file=output_dir/f"{base}_transcription.txt"
-    with open(output_file,"w",encoding="utf-8") as f:
-        f.write(transcription['text'])
-    print(f"\nTranscription saved to {output_file}")
+    # cur_dir_level=Path(__file__).resolve().parent
+    # parent_dir=cur_dir_level.parent
+    # output_dir=parent_dir/"output"
+    # output_dir.mkdir(exist_ok=True)
+    # # os.makedirs("output", exist_ok=True)
+    # base=os.path.splitext(os.path.basename(audio_file))[0]
+    # output_file=output_dir/f"{base}_transcription.txt"
+    # with open(output_file,"w",encoding="utf-8") as f:
+    #     f.write(transcription['text'])
+    # print(f"\nTranscription saved to {output_file}")
         
 
     # os.remove(processed_audio)
